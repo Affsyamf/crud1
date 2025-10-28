@@ -1,6 +1,6 @@
 import { ArrowPathIcon, TrashIcon } from "@heroicons/react/24/solid";
 
-export default function TableList() {
+export default function TableList({handleOpen}) {
   const clients = [
     {
       id: 1,
@@ -59,7 +59,7 @@ export default function TableList() {
                 </td>
                 <td>
                   <button>
-                    <ArrowPathIcon className="h-6 w-6 text-blue-500 hover:text-blue-700" />
+                    <ArrowPathIcon onClick={() => handleOpen('edit')} className="h-6 w-6 text-blue-500 hover:text-blue-700" />
                   </button>
                   <button>
                     <TrashIcon className="h-6 w-6 mx-2 text-red-500 hover:text-red-700" />

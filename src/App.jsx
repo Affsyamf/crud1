@@ -24,12 +24,13 @@ function App() {
   return (
     <>
     <Navbar onOpen= {() => handleOpen('add')} />
-    <TableList />
+    <TableList handleOpen={handleOpen} />
     <ModalForm 
     isOpen={isOpen}
     onSubmit={handleSubmit}
     onClose = {() => 
-    setIsOpen(false)} 
+    setIsOpen(false)}
+    mode={modalMode} 
    />
     </>
   )
