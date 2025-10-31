@@ -17,5 +17,36 @@ export const createclient = async (req, res) => {
     }
     catch (error) {
       console.error(error);
-        res.status(500).json({ error: "Internal Server Error" });
+        res.status(500).json({ error: "Gagal membuat data karyawan" });
+    }};
+
+export const updateclient = async (req, res) => {
+    try {
+        const clientId = req.params.id;
+        const clientData = req.body;
+        const updatedclient = await clientServices.updateclient(clientData, clientId);
+        res.status(200).json(updatedclient);
+        if (!updatedclient) {
+            return res.status(404).json({ error: "Karyawan tidak ditemukan" });
+        }
+        res.status(200).json(updatedclient);
+    }
+    catch (error) {
+      console.error(error);
+        res.status(500).json({ error: "Gagal memperbaharui data karyawan" });
+    }};
+
+
+export const deleteclient = async (req, res) => {
+    try {
+        const clientId = req.params.id;
+        const deletedclient = await clientServices.deleteclient(clientId);
+        if (!deletedclient) {
+            return res.status(404).json({ error: "Karyawan tidak ditemukan tidak dapat dihapus" });
+        }
+        res.status(200).send("Karyawan berhasil dihapus");
+    }
+    catch (error) {
+      console.error(error);
+        res.status(500).json({ error: "Gagal menghapus data karyawan" });
     }};

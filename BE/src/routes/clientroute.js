@@ -7,4 +7,7 @@ router.get('/clients', clientController.getClients);
 
 router.post('/clients', clientController.createclient);
 
+router.put('/clients/:id', clientController.updateclient);
+
+router.delete('/clients/:id', clientController.deleteclient);
 export default router;

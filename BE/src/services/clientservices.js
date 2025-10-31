@@ -13,3 +13,20 @@ export const createclient = async (clientData) => {
   );
   return rows[0];
 };
+
+export const updateclient = async (clientData, clientId) => {
+  const { name, email, job, favorite_color, isactive } = clientData;
+  const { rows } = await query(
+    "UPDATE clients SET name = $1, email = $2, job = $3, favorite_color = $4, isactive = $5 where id = $6 RETURNING *",
+    [name, email, job, favorite_color, isactive, clientId ]
+  );
+  return rows[0];
+};
+
+export const deleteclient = async (clientId) => {
+ const { rowCount } = await query(
+    "DELETE FROM clients where id = $1",
+    [clientId ]
+  );
+  return rowCount > 0;
+};
