@@ -1,29 +1,29 @@
 import { ArrowPathIcon, TrashIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 
 export default function TableList({handleOpen}) {
-  const clients = [
-    {
-      id: 1,
-      name: "Cy Ganderton",
-      job: "Quality Control Specialist",
-      favoriteColor: "Blue",
-    },
-    {
-      id: 2,
-      name: "Hart Hagerty",
-      job: "Desktop Support Technician",
-      favoriteColor: "Purple",
-    },
-    {
-      id: 3,
-      name: "Brice Swyre",
-      job: "Tax Accountant",
-      favoriteColor: "Red",
-    },
-  ];
+
+  const [tabledata, setTabledata] =  useState ([]);
+  const [error, setError] = useState (null);
+
+  useEffect (() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get ("http://localhost:3000/api/clients"); 
+        setTabledata (response.data);
+      } catch (err) {
+        setError (err.message);
+      }
+    };
+    fetchData ();
+  }, []);
+
 
   return (
     <>
+    {error && <p className="text-red-500">Error: {error}</p>}
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
@@ -31,22 +31,24 @@ export default function TableList({handleOpen}) {
             <tr>
               <th></th>
               <th>Name</th>
+              <th>Email</th>
               <th>Job</th>
               <th>Favorite Color</th>
-              <th>Status</th>
+              <th className="text-center">Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody className="hover">
             {/* row 1 */}
 
-            {clients.map((client) => (
+            {tabledata.map((client) => (
               <tr key={client.id} className="hover:bg-base-300">
                 <th> {client.id} </th>
                 <th>{client.name}</th>
+                <th> {client.email} </th>
                 <td>{client.job}</td>
-                <td>{client.favoriteColor}</td>
-                <td>
+                <td>{client.favorite_color}</td>
+                <td className="text-center">
                   <button
                     className={`btn rounded-full w-20 ${
                       client.isactive
