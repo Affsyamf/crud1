@@ -1,36 +1,48 @@
 import { ArrowPathIcon, TrashIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
+export default function TableList({
+  handleOpen,
+  tabledata,
+  setTabledata,
+  onSearch,
+  error: fetcherror,
+}) {
 
-export default function TableList({handleOpen, onSearch}) {
+  const [erordelete, setErrordelete] = useState(null);
 
-  const [tabledata, setTabledata] =  useState ([]);
-  const [error, setError] = useState (null);
-
-  useEffect (() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get ("http://localhost:3000/api/clients"); 
-        setTabledata (response.data);
-      } catch (err) {
-        setError (err.message);
-      }
-    };
-    fetchData ();
-  }, []);
-
-  const filterData = tabledata.filter ((client) => 
-    client.name.toLowerCase().includes(onSearch.toLowerCase()) ||
-    client.email.toLowerCase().includes(onSearch.toLowerCase()) ||
-    client.job.toLowerCase().includes(onSearch.toLowerCase()) ||
-    client.favorite_color.toLowerCase().includes(onSearch.toLowerCase())
+  const filterData = tabledata.filter(
+    (client) =>
+      client.name.toLowerCase().includes(onSearch.toLowerCase()) ||
+      client.email.toLowerCase().includes(onSearch.toLowerCase()) ||
+      client.job.toLowerCase().includes(onSearch.toLowerCase()) ||
+      client.favorite_color.toLowerCase().includes(onSearch.toLowerCase())
   );
 
+  const handleDelete = async (clientId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this client?"
+    );
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:3000/api/clients/${clientId}`);
+        setTabledata(tabledata.filter((client) => client.id !== clientId));
+        setErrordelete(null);
+      } catch (error) {
+        console.error("Error deleting client:", error);
+        setErrordelete(error.message || "Error deleting client");
+      }
+    }
+  };
 
   return (
     <>
-    {error && <p className="text-red-500">Error: {error}</p>}
+      {fetcherror && (
+        <p className="text-red-600"> Error fetching data: {fetcherror} </p>)}
+      {erordelete && (
+        <p className="text-red-600"> Error deleting data: {erordelete} </p>
+      )}
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
@@ -68,10 +80,16 @@ export default function TableList({handleOpen, onSearch}) {
                 </td>
                 <td>
                   <button>
-                    <ArrowPathIcon onClick={() => handleOpen('edit', client)} className="h-6 w-6 text-blue-500 hover:text-blue-700" />
+                    <ArrowPathIcon
+                      onClick={() => handleOpen("edit", client)}
+                      className="h-6 w-6 text-blue-500 hover:text-blue-700"
+                    />
                   </button>
                   <button>
-                    <TrashIcon className="h-6 w-6 mx-2 text-red-500 hover:text-red-700" />
+                    <TrashIcon
+                      onClick={() => handleDelete(client.id)}
+                      className="h-6 w-6 mx-2 text-red-500 hover:text-red-700"
+                    />
                   </button>
                 </td>
               </tr>

@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 
-export default function ModalForm({ isOpen, onClose, mode, onSubmit, clientData }) {
+export default function ModalForm({
+  isOpen,
+  onClose,
+  mode,
+  onSubmit,
+  clientData,
+}) {
   const [favoritecolor, setFavoritecolor] = useState("");
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
@@ -19,31 +25,30 @@ export default function ModalForm({ isOpen, onClose, mode, onSubmit, clientData 
         job,
         email,
         favorite_color: favoritecolor,
-        isactive: status
+        isactive: status,
       };
-    await onSubmit(clientData)
-    onClose()
-    }catch (error) {
+      await onSubmit(clientData);
+      onClose();
+    } catch (error) {
       console.error("Error submitting form:", error);
     }
-  }
+  };
 
   useEffect(() => {
     if (mode === "edit" && clientData) {
-      setName (clientData.name);
-      setEmail (clientData.email);
-      setJob (clientData.job);
-      setFavoritecolor (clientData.favorite_color);
-      setStatus (clientData.isactive);
+      setName(clientData.name);
+      setEmail(clientData.email);
+      setJob(clientData.job);
+      setFavoritecolor(clientData.favorite_color);
+      setStatus(clientData.isactive);
     } else {
-      setName ("");
-      setEmail ("");    
-      setJob ("");
-      setFavoritecolor ("");
-      setStatus (false);
+      setName("");
+      setEmail("");
+      setJob("");
+      setFavoritecolor("");
+      setStatus(false);
     }
   }, [mode, clientData]);
-
 
   return (
     <>

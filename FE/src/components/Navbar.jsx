@@ -1,10 +1,7 @@
 export default function Navbar({ onOpen, onSearch }) {
   const handleSearchChange = (e) => {
     onSearch(e.target.value);
-  }
-
-
-
+  };
 
   return (
     <>
