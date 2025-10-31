@@ -47,6 +47,18 @@ export const deleteclient = async (req, res) => {
         res.status(200).send("Karyawan berhasil dihapus");
     }
     catch (error) {
-      console.error(error);
-        res.status(500).json({ error: "Gagal menghapus data karyawan" });
+      console.error('Gagal menghapus data karyawan', error);
+        res.status(500).json({ message: "internal server eror" });
     }};
+
+
+export const searchclient = async (req, res) => {
+    try {
+        const searchTerms = req.query.q;
+        const clients = await clientServices.searchclient(searchTerms);
+        res.status(200).json(clients);
+    }catch (error) {
+        console.error('Error searching clients', error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}

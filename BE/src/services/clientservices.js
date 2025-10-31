@@ -30,3 +30,14 @@ export const deleteclient = async (clientId) => {
   );
   return rowCount > 0;
 };
+
+export const searchclient = async (searchTerms) => {
+    if (!searchTerms) {
+    return [];
+  }
+ const { rows } = await query(
+    "SELECT * FROM clients where name ILIKE $1 OR job ILIKE $1 OR email ILIKE $1 OR favorite_color ILIKE $1 order by id ASC",
+    [`%${searchTerms}%`]
+  );
+  return rows;
+};
