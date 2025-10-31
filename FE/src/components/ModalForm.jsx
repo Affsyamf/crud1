@@ -10,7 +10,7 @@ export default function modalform({ isOpen, onClose, mode, onSubmit }) {
     setStatus(e.target.value === "Active");
   };
 
-  const handleonsubmit = (e) => {
+  const handlesubmit = (e) => {
     e.preventDefault();
     onClose()
   }

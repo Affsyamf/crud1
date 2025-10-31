@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 
-export default function TableList({handleOpen}) {
+export default function TableList({handleOpen, onSearch}) {
 
   const [tabledata, setTabledata] =  useState ([]);
   const [error, setError] = useState (null);
@@ -19,6 +19,13 @@ export default function TableList({handleOpen}) {
     };
     fetchData ();
   }, []);
+
+  const filterData = tabledata.filter ((client) => 
+    client.name.toLowerCase().includes(onSearch.toLowerCase()) ||
+    client.email.toLowerCase().includes(onSearch.toLowerCase()) ||
+    client.job.toLowerCase().includes(onSearch.toLowerCase()) ||
+    client.favorite_color.toLowerCase().includes(onSearch.toLowerCase())
+  );
 
 
   return (
@@ -41,7 +48,7 @@ export default function TableList({handleOpen}) {
           <tbody className="hover">
             {/* row 1 */}
 
-            {tabledata.map((client) => (
+            {filterData.map((client) => (
               <tr key={client.id} className="hover:bg-base-300">
                 <th> {client.id} </th>
                 <th>{client.name}</th>
