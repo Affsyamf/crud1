@@ -68,7 +68,7 @@ export default function TableList({handleOpen, onSearch}) {
                 </td>
                 <td>
                   <button>
-                    <ArrowPathIcon onClick={() => handleOpen('edit')} className="h-6 w-6 text-blue-500 hover:text-blue-700" />
+                    <ArrowPathIcon onClick={() => handleOpen('edit', client)} className="h-6 w-6 text-blue-500 hover:text-blue-700" />
                   </button>
                   <button>
                     <TrashIcon className="h-6 w-6 mx-2 text-red-500 hover:text-red-700" />

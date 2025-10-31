@@ -11,16 +11,31 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [clientData, setClientData] = useState(null);
 
-  const handleOpen = (mode) => {
+  const handleOpen = (mode, client) => {
+    setClientData(client || null);
     setmodalMode(mode);
     setIsOpen(true);
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async (newClientData) => {
     if (modalMode === 'add') {
-      console.log('Adding new item...');
-    }else if (modalMode === 'edit') {
+      try {
+        const response = await axios.post('http://localhost:3000/api/clients', newClientData);
+        console.log('Client added:', response.data);
+      }catch (error) {
+        console.error('Error adding client:', error);
+      }
+      console.log('modal add...');
+      
+    }else {
       console.log('Editing item...');
+      console.log('modal edit...');
+      try {
+        const response = await axios.put(`http://localhost:3000/api/clients/${clientData.id}`, newClientData);
+        console.log('Client updated:', response.data);
+      }catch (error) {
+        console.error('Error updating client:', error);
+      }
     }
   }
 
